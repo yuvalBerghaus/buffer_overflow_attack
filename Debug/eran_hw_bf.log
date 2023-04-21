@@ -1,0 +1,8 @@
+﻿cl : command line warning D9002: ignoring unknown option '-g'
+cl : command line warning D9002: ignoring unknown option '-fno-stack-protector'
+cl : command line warning D9002: ignoring unknown option '-no_pie'
+  main.c
+C:\Users\Yuval\source\repos\eran_hw_bf\eran_hw_bf\main.c(6,9): warning C4068: unknown pragma 'GCC'
+C:\Users\Yuval\source\repos\eran_hw_bf\eran_hw_bf\main.c(7,1): warning C4005: '_CRT_SECURE_NO_WARNINGS': macro redefinition
+C:\Users\Yuval\source\repos\eran_hw_bf\eran_hw_bf\main.c : message : see previous definition of '_CRT_SECURE_NO_WARNINGS'
+  eran_hw_bf.vcxproj -> C:\Users\Yuval\source\repos\eran_hw_bf\Debug\eran_hw_bf.exe
