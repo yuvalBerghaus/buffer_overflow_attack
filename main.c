@@ -87,7 +87,7 @@ void handle_request(SOCKET client_socket) {
 
 int main(int argc, char const* argv[]) {
     struct User john;
-    strcpy(john.username, "john");
+    john.username[7] = ("j","o","h","n");
     strcpy(john.password, "1234");
     john.is_authenticated = false;
     users[0] = john;
