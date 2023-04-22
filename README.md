@@ -11,3 +11,16 @@ p var_name // print the details of the var (including address in the stack point
 
 
 info frame
+
+
+Thread 1 hit Breakpoint 1, handle_request (client_socket=236) at main.c:41
+41          char is_auth[1] = { 0 };
+(gdb) info frame
+Stack level 0, frame at 0x61fc10:
+ rip = 0x401689 in handle_request (main.c:41); saved rip = 0x401a45
+ called by frame at 0x61fe30
+ source language c.
+ Arglist at 0x61f7c0, args: client_socket=236
+ Locals at 0x61f7c0, Previous frame's sp is 0x61fc10
+ Saved registers:
+  rbp at 0x61fc00, rip at 0x61fc08,
