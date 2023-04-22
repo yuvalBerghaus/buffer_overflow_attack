@@ -20,7 +20,6 @@ typedef unsigned int socklen_t;
 #define MAX_PASSWORD_LEN 5
 
 struct User {
-    bool is_authenticated;
     char username[MAX_USERNAME_LEN + 1];
     char password[MAX_PASSWORD_LEN + 1];
 };
@@ -39,10 +38,10 @@ void send_error(SOCKET client_socket) {
 }
 
 void handle_request(SOCKET client_socket) {
+    char is_auth[1] = { 0 };
+    char username[4];
+    char password[6];
     char request[1024];
-    bool is_authenticated = false;
-    char username[MAX_USERNAME_LEN + 1];
-    char password[MAX_PASSWORD_LEN + 1];
 
 
     // receive the request from the client
@@ -55,9 +54,51 @@ void handle_request(SOCKET client_socket) {
 
     // null-terminate the request string
     request[bytes_received] = '\0';
-
+    printf("%c",username[0]);
     // parse the request to extract the username and password
     //if (sscanf_s(request, "GET /login?username=%[^&]&password=%s HTTP/1.1", username, (unsigned)sizeof(username), password, (unsigned)sizeof(password)) != 2) {
+    /*
+    if (strstr(request, "GET /login?username=") != NULL) {
+        char* username_start = strstr(request, "GET /login?username=") + strlen("GET /login?username=");
+        char* password_start = strstr(request, "&password=") + strlen("&password=");
+        char* username_end = strstr(username_start, "&");
+        if (username_end == NULL) {
+            // handle error: username end delimiter not found
+        }
+        char* password_end = strstr(password_start, " HTTP/1.1");
+        if (password_end == NULL) {
+            // handle error: password end delimiter not found
+        }
+        int i, j;
+        for (i = 0, j = 0; username_start + i < username_end; i++, j++) {
+            if (username_start[i] == '%') {
+                username[j] = (char)atoi(&username_start[i + 1]);
+                i += 2;
+            }
+            else {
+                username[j] = username_start[i];
+            }
+        }
+        username[j] = '\0';
+        for (i = 0, j = 0; password_start + i < password_end; i++, j++) {
+            if (password_start[i] == '%') {
+                password[j] = (char)atoi(&password_start[i + 1]);
+                i += 2;
+            }
+            else {
+                password[j] = password_start[i];
+            }
+        }
+        password[j] = '\0';
+        printf("%s", username);
+        printf("%s", password);
+    }
+
+    else {
+        // handle other HTTP requests
+    }
+    */
+    
     if (sscanf(request, "GET /login?username=%[^&]&password=%s HTTP/1.1", username, password) != 2) {
         if (strcmp(request, "GET / HTTP/1.1") == 0) {
             send_response(client_socket, "YUVAL");
@@ -67,52 +108,57 @@ void handle_request(SOCKET client_socket) {
         }
         return;
     }
+    
 
     // check if the username and password match a registered user
     for (int i = 0; i < MAX_CONNECTIONS; i++) {
         if (strcmp(users[i].username, username) == 0 && strcmp(users[i].password, password) == 0) {
-            users[i].is_authenticated = true;
-            is_authenticated = true;
-            send_response(client_socket, "Welcome to your page!");
+            is_auth[0] = 1;
             break;
         }
     }
 
     // if the username and password don't match a registered user, send an error response
-    if (!is_authenticated) {
-        send_error(client_socket);
+    if (!is_auth[0]) {
+        send_response(client_socket, "Wrong credentials!");
+    }
+    else {
+        send_response(client_socket, "Welcome to your page!");
     }
 }
 
+void show_passwords() {
+    printf("likasombodee");
+}
 
 int main(int argc, char const* argv[]) {
-    bool is_authenticated = false;
-    char password[8];
-    printf("Enter password: ");
-    gets(password);
+    //bool is_authenticated = false;
+    //char password[8];
+    //printf("Enter password: ");
+    //gets(password);
 
-    if (strcmp(password, "password") == 0) {
-        is_authenticated = true;
-    }
+    //if (strcmp(password, "password") == 0) {
+    //    is_authenticated = true;
+    //}
 
-    if (is_authenticated) {
-        printf("Access granted!\n");
-    }
-    else {
-        printf("Access denied.\n");
-    }
+    //if (is_authenticated) {
+    //    printf("Access granted!\n");
+    //}
+    //else {
+    //    printf("Access denied.\n");
+    //}
 
-    return 0;
-    /*
+    //return 0;
+
     struct User john;
-    john.username[4] = ("j","o","h","n");
-    john.password[4] = ("1", "2", "3", "4");
-    john.is_authenticated = false;
+    strcpy(john.username, "john");
+    strcpy(john.password, "1234");
+    //john.is_authenticated = false;
     users[0] = john;
 
-    for (int i = 1; i < MAX_CONNECTIONS; i++) {
-        users[i].is_authenticated = false;
-    }
+    //for (int i = 1; i < MAX_CONNECTIONS; i++) {
+    //    users[i].is_authenticated = false;
+    //}
     WSADATA wsaData;
     SOCKET server_socket, client_socket;
     struct sockaddr_in server_address, client_address;
@@ -120,9 +166,9 @@ int main(int argc, char const* argv[]) {
 
     // initialize the users array
 // initialize the users array
-    for (int i = 0; i < MAX_CONNECTIONS; i++) {
-        users[i].is_authenticated = false;
-    }
+    //for (int i = 0; i < MAX_CONNECTIONS; i++) {
+    //    users[i].is_authenticated = false;
+    //}
 
     // initialize Winsock
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
@@ -178,5 +224,4 @@ int main(int argc, char const* argv[]) {
     WSACleanup();
 
     return 0;
-    */
 }
