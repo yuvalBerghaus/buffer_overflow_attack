@@ -86,11 +86,10 @@ void handle_request(SOCKET client_socket) {
 
 
 int main(int argc, char const* argv[]) {
-    char password[8];
     bool is_authenticated = false;
-
+    char password[8];
     printf("Enter password: ");
-    scanf("%s", password);
+    gets(password);
 
     if (strcmp(password, "password") == 0) {
         is_authenticated = true;
