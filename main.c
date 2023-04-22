@@ -86,9 +86,28 @@ void handle_request(SOCKET client_socket) {
 
 
 int main(int argc, char const* argv[]) {
+    char password[8];
+    bool is_authenticated = false;
+
+    printf("Enter password: ");
+    scanf("%s", password);
+
+    if (strcmp(password, "password") == 0) {
+        is_authenticated = true;
+    }
+
+    if (is_authenticated) {
+        printf("Access granted!\n");
+    }
+    else {
+        printf("Access denied.\n");
+    }
+
+    return 0;
+    /*
     struct User john;
-    john.username[7] = ("j","o","h","n");
-    strcpy(john.password, "1234");
+    john.username[4] = ("j","o","h","n");
+    john.password[4] = ("1", "2", "3", "4");
     john.is_authenticated = false;
     users[0] = john;
 
@@ -160,4 +179,5 @@ int main(int argc, char const* argv[]) {
     WSACleanup();
 
     return 0;
+    */
 }
