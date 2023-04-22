@@ -24,3 +24,5 @@ Stack level 0, frame at 0x61fc10:
  Locals at 0x61f7c0, Previous frame's sp is 0x61fc10
  Saved registers:
   rbp at 0x61fc00, rip at 0x61fc08,
+
+as we can see the address of the next instruction of the function that called our current stack call function is 0x401a45
